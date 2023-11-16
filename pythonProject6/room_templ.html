@@ -1,0 +1,54 @@
+<html>
+<head>
+ <title> Список комнат </title>
+ <link rel="stylesheet" href="table_style.css">
+ {% macro render_table(table_name, relation) %}
+     <div class="style_table">
+    <p>
+     <b>{{table_name}} этаж</b>
+    </p>
+    <!-- количество строк в таблице -->
+    {% set n = len(relation) %}
+
+    <table>
+     <!-- формируем заголовок таблицы (имена столбцов) -->
+     <tr>
+     {% for name in relation.dtypes.index %}
+     <th>{{name}}</th>
+     {% endfor %}
+     </tr>
+
+    <tbody>
+    <!-- для всех строк таблицы -->
+    {% for i in range(n) %}
+    <tr>
+    <!-- выводим значение каждого столбца -->
+    {% for name in relation.dtypes.index %}
+        <td>
+            {{ relation.loc[i, name] }}
+        </td>
+    {% endfor %}
+    </tr>
+    {% endfor %}
+    </tbody>
+
+    </table>
+    </div>
+  {% endmacro %}
+
+    {% macro render_field(floor) %}
+        <p>
+         <form>
+         Этаж:
+         <!-- Создаем поле со списком -->
+        <input type="number" min="1" max="99" value="{{floor}}">
+         <input type="submit" value="Найти">
+         </form>
+        </p>
+    {% endmacro %}
+</head>
+<body>
+ {{ render_field(floor) }}
+ {{ render_table(floor, rooms) }}
+</body>
+</html>
